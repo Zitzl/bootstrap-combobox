@@ -131,6 +131,10 @@
     }
 
   , show: function () {
+	  if (this.options.disallowDropdown) {
+		  return this;
+	  }
+	  
       var pos = $.extend({}, this.$element.position(), {
         height: this.$element[0].offsetHeight
       });
@@ -181,7 +185,9 @@
   , template: function() {
       if (this.options.bsVersion == '2') {
         return '<div class="combobox-container"><input type="hidden" /> <div class="input-append"> <input type="text" autocomplete="off" /> <span class="add-on dropdown-toggle" data-dropdown="dropdown"> <span class="caret"/> <i class="icon-remove"/> </span> </div> </div>'
-      } else if (this.options.bsVersion == '4') {
+      } else if (this.options.bsVersion == '4' && this.options.disallowDropdown === true) {
+          return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /></div>'
+	  } else if (this.options.bsVersion == '4') {
           return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /> <div class="input-group-append"> <button id="dropdownMenuButton" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button> </div> </div>'
       } else {
         return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="caret" /> <span class="glyphicon glyphicon-remove" /> </span> </div> </div>'
@@ -460,6 +466,7 @@
 
   $.fn.combobox.defaults = {
     bsVersion: '4'
+  , disallowDropdown: false
   , menu: '<ul class="typeahead typeahead-long dropdown-menu"></ul>'
   , item: '<li><a href="#" class="dropdown-item"></a></li>'
   , clearIfNoMatch: true
